@@ -1,0 +1,10 @@
+*.txt
+*.jpg
+*.zip
+*.log
+*.DS_Store
+temp.txt
+/log/*.log
+/log/*.log.[0-9]
+assets/videos/
+!assets/videos/tour_*.mpg

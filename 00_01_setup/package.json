@@ -1,0 +1,25 @@
+{
+  "name": "00_01_setup",
+  "version": "1.0.0",
+  "description": "Webpack and Babel Setup",
+  "main": "server.js",
+  "scripts": {
+    "start": "nodemon server.js  --ignore /public",
+    "dev": "webpack -wd"
+  },
+  "author": "Masaki",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.15.2",
+    "mongodb": "^2.2.25",
+    "react": "^15.5.4",
+    "react-dom": "^15.5.4"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.24.1",
+    "babel-loader": "^6.4.1",
+    "babel-preset-react": "^6.24.1",
+    "nodemon": "^1.11.0",
+    "webpack": "^2.4.1"
+  }
+}

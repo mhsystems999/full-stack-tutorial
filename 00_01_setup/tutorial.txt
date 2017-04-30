@@ -1,0 +1,87 @@
+// First download and install node, goto https://nodejs.org/en/
+
+//After Node is installed, initialize npm and package.json with following command
+npm init 
+// answer questions or accept defaults.
+
+// Install npm packages with commands as follows.   This will update package.json.
+// If you copy my package.json file you can install everything with command "npm install"
+npm i -S express
+npm i -S mongodb
+npm i -S react react-dom
+npm i -D webpack
+npm i -D babel-cli babel-loader babel-preset-react
+npm i -D nodemon
+
+//Edit the package.json file and update the "scripts" attribute as follows.
+//When done, node server can be started with command "npm start"
+//and the Babel JSX trasnpiler can be started with "npm dev"
+  "scripts": {
+    "start": "nodemon server.js",
+    "dev": "webpack -wd server.js"
+  },
+
+//npm run start to start node server    
+//npm run dev to start Babel transpiler
+
+
+// Your package.json file should look like this
+{
+  "name": "00_01_setup",
+  "version": "1.0.0",
+  "description": "Webpack and Babel Setup",
+  "main": "server.js",
+  "scripts": {
+    "start": "nodemon server.js",
+    "dev": "webpack -wd server.js"
+  },
+  "author": "Masaki",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.15.2",
+    "mongodb": "^2.2.25",
+    "react": "^15.5.4",
+    "react-dom": "^15.5.4"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.24.1",
+    "babel-loader": "^6.4.1",
+    "babel-preset-react": "^6.24.1",
+    "nodemon": "^1.11.0",
+    "webpack": "^2.4.1"
+  }
+}
+
+
+
+//Create directories as follows to organize the project
+mkdir src
+mkdir public
+
+// This is a webpack configuration file.   It tells Webpack where files containing JSX, ES5, etc. // are and to monitor for changes.   It will transpile automatically as your file is saved.
+// It also tells Babel where to output the transpiled file "bundle.js".
+// Create a file in the project root named "webpack.config.js" with content as follows
+
+module.exports = {
+   entry:"./src/index.js",
+   output:{
+     path:__dirname + "/public",
+     filename: "bundle.js"
+   },
+   module:{
+     loaders:[{
+       test:/\.js$/,
+       loader:"babel-loader"
+     }
+     ]
+   }
+ }
+
+// create a file in project root named ".babelrc".   This is a Babel transpiler configuration.
+// More options can be added here if ES6 transpiling is needed.   
+// But Node and Chrome can now run ES6 natively.   The "react" preset tells Babel to transpile 
+// JSX to Javascript.
+//
+ {
+  "presets":["react"]
+ }

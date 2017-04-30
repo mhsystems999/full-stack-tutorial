@@ -1,0 +1,23 @@
+{
+  "name": "01_04_ejs",
+  "version": "1.0.0",
+  "description": "full stack",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon server.js.  --ignore /public",
+    "dev": "webpack -wd"
+  },
+  "author": "Masaki",
+  "license": "ISC",
+  "dependencies": {
+    "react": "^15.5.4",
+    "react-dom": "^15.5.4"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.24.1",
+    "babel-loader": "^6.4.1",
+    "babel-preset-react": "^6.24.1",
+    "webpack": "^2.4.1"
+  }
+}

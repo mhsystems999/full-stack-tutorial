@@ -1,0 +1,202 @@
+//config username and email
+git config --global user.name "fname lname"
+git config --global user.email "name@com"
+git config --global color.ui true
+git config --list
+//this info shows up in the commit log and when you collaborate
+//other collaborators can contact you and ask quesitons
+//info is stored in ~/.gitconfig
+
+.gitignore
+//include files  and directories to ignore
+//basic reg ex can be used * ? [aeiou] [0-9]
+// *.php   !index.php
+// assets/videos/
+//use # for comments
+.gitignore_global
+git config --global core.excludesfile ~/.gitignore_global
+git rm --cached filename
+
+//setup git auto complete in bash
+cd ~
+//download git syntax file for use with bash shell
+curl -OL https://github.com/git/git/raw/master/contrib/completion/git-completion.bash
+//raname the downloaded file to make it invisible
+mv ~/git-completion.bash ~/.git-completion.bash
+edit ~/.bash_profile or ~/.bashrc
+nano .bash_profile
+//enter below exactly as is with spaces precisely as below
+if [ -f ~/.git-completion.bash ]; then
+        source ~/.git-completion.bash
+fi
+//Then quit the terminal app and restart the terminal app
+//trye git h //and tab, autocomplete should enter "help" 
+
+git help   or git help "command"
+// to get help on commands
+
+//git uses a 3 stage acrhitecture
+working copy  ==add==>   staging copy  ==commit==>  repository copy
+//each commit is assign a unique hash value(SHA)
+//HEAD always points to the tip of the current BRANCH
+
+git init
+//archive files are stored in .git dir
+//to see ls -la
+
+git status
+//shows status of unstaged files and staged files
+
+git diff
+//shows edits made in working copy compared to repository copy
+
+git diff --staged
+//shows edits made in staged copy compared to repository copy
+
+git add "filename"
+//add file to staging
+
+git add .
+// add all changed/unstaged files to staging
+
+git rm "filename"
+//to delete a file drag to trash and then git rm "filename" and then do a commit
+//or just to git remove to delete file in one step and commit delete
+
+git mv "orig filename" "new file name"
+//to rename and stage when done commit changes
+
+git commit -m "message/description of edits"
+//moves files out of staging and commits to archive
+//make the message meaningful and less than 72 chars
+//trouble ticket tracking numbers, dept name, etc.
+
+git commit -am "message"
+// to stage and commit in one step
+
+git commit --amend -m "message"
+// to commit and overwrite the last commit.
+// this can also be used to amend the message
+
+git log
+// to see commit history
+
+git checkout filename 
+//retrieves commited file to working directory. 
+//working directory -git add-> staging -git commit-> archived
+//archived --git checkout "filename"--> working directory
+
+git checkout filename "SHA id"
+//retrieves commited file to stagiging directory. 
+
+git reset HEAD filename
+//git reset HEAD filename-> deletes file in staging and moves to working
+
+git reset --soft "SHA id"
+//rewinds HEAD to SHA does not change staging nor working files
+//the HEAD can be moved back forward if you specify the latest SHA.  Make a ciopy of the log and note all SHA ids just in case.
+
+git reset --mixed "SHA id"
+//rewinds HEAD to SHA, changes staging files to specified SHA id.
+//the HEAD can be moved back forward if you specify the latest SHA.  Make a ciopy of the log and note all SHA ids just in case.
+
+git reset --hard "SHA id"
+//rewinds HEAD to SHA, changes staging files and working files to specified SHA id.
+//the HEAD can be moved back forward if you specify the latest SHA.  Make a ciopy of the log and note all SHA ids just in case.
+
+git revert "SHA id"
+//revert to past version and creates new commit.   It does not delete any other commits.
+//it also reverts the working files
+
+git rm filename
+//deletes file and moves delete to staging in one step.   
+//Same effect as delete in finder and git add.
+
+git add --all
+//moves all changes to staging
+
+git checkout hash###  
+//creates a detached state
+
+git branch
+//lists a branches, the with asterisk is the current branch
+
+git branch name
+// creates a new branch with name 
+
+git branch name hash#
+// creates a new branch with name from hash#
+
+git merge "branch name"
+// updates the current branch(*) with branch specified
+
+git branch -m oldname newname
+//renames branches
+
+git branch -D "branch name"
+// deletes a branch
+
+===============REMOTES/GITHUB=====================
+//remote servers let you collaborate, share and merge files
+//but it does not solve the problem or the need to coordinate
+//work carefully among the collaborators.
+
+//create and load github
+login to github
+create a repository and get url
+git remote //lists all remote repository
+git remote add "alias(origin)" "url"
+cat .git/config //to see url/alias
+git remove rm "alias/origin"  // to delete
+git push -u "alias" "branch"  // to initially load branch to remote repository and create a tracking branch
+
+//to download for a collaborator
+git clone "url" "directory(optional)"  //this automatically creates a directory, sets up git and adds a tracking branch
+
+//to make edits
+//edit files, add and commit to master branch then
+//merge master branch with origin master.
+git push //git already knows which remote url is associated 
+//no merging is performed/allowed between server and origin/master barnch, only fast forward commits are allowed.    Therefore origin/master must have the latest fetch and any edits merged from master before pushing to the server.
+
+//collaborator will not see new updates automatically, collaborator must fetch server updates first
+git fetch // to download updates to the origin/master branch, origin/master is over written
+git diff master..origin/master //to see diff
+git merge origin/master //to get updates to master branch
+git pull // to fetch and merge in one step, but remember what is happening
+
+//to delete a server branch
+git push origin --delete "branch name"
+
+//SAMPLE WORK FLOW
+//Collaborator-A
+git checkout master  //setup current workspace
+git fetch			//update local copy with remote reposit branches
+git merge origin/master	//update local master if needed
+git checkout -b feedback_form	//make a new branch for new work to do
+make edits...			//do your work in working files
+git add feedback.html	//add work to staging
+git commit -m "made these changes ... to feedback form"  //commit to origin/feedback_form
+git fetch	//get a fresh copy from remote just in case, if needed merge to make sure next push is a fast forward push
+git push -u origin feedback_form	//push branch feedback_form to remote and contact collaborator and ask to review
+
+//Collaborator-B
+git checkout master   //setup work files
+git fetch			//get remote files
+git merge origin/master		//make sure local master branch is updated
+git checkout -b feedback_form origin/feedback_form	//setup workspace with branch feedback_form
+git log 	//inspect edits by collaborator-A
+git show SHA#	//inspect
+make edits...	//make own further edits
+git commit -am "added ...."	//commit edits
+git push 	//push back updates to remote branch feedback_form
+
+//Collaborator-A
+git fetch	//get remote files
+git lop -p feedback_form..origin/feedback_form  //inspect changes
+git merge origin/feedback_form	//merge edits by Collaborator-B
+git checkout master		//get workspace set with master branch
+git fetch	//get update from remote just in case
+git merge origin/master		//update master just in case
+git merge feedback_form		//merge branch feedback_form into master branch
+git push		//master to remote
